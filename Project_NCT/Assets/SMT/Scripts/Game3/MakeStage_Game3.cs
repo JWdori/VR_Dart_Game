@@ -45,7 +45,7 @@ public class MakeStage_Game3 : MonoBehaviour
             //normal 모드는 levelNum 2로 설정
             GameManager3.levelNum = 2;
             GameManager3.stage_temp = 0;
-
+            GameManager3.stageCnt = 1;
             //문제 생성
             //외워야 되는 Pad가 누적인 경우
             //GameManager3.Shuffle2();
