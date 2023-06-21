@@ -6,7 +6,7 @@ public class dart : MonoBehaviour
     private Quaternion originalRotation;
     private Vector3 previousVelocity;
     private bool wasInAir = false;
-
+    public static bool thrown = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -22,6 +22,7 @@ public class dart : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             transform.rotation = originalRotation; // Keep the original rotation
+            thrown = true;
         }
         else if (!isInAir)
         {

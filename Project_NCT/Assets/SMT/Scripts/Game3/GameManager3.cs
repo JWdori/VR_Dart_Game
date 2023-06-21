@@ -101,7 +101,7 @@ public class GameManager3 : MonoBehaviour
     private int score = 0;
     //private int fail = 0;
 
-    public int[] Clearcnt = { 2, 2, 3, 3, 3, 4, 4, 5, 5, 6 };
+    public int[] Clearcnt = { 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 };
     public int[] FailBalloonscnt = { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
 
     //어려움 난이도
@@ -554,7 +554,7 @@ public class GameManager3 : MonoBehaviour
         {
             float distanceToExistingBalloon = Mathf.Abs(position.x - balloonPosition.x);
 
-            if (distanceToExistingBalloon < balloonRadius * 2)
+            if (distanceToExistingBalloon < balloonRadius * 1)
             {
                 // 이 위치는 이미 존재하는 풍선과 너무 가까움
                 return false;
