@@ -22,6 +22,8 @@ public class MakeStage_Game3 : MonoBehaviour
             Result_Game3.isResult = false;
             //easy 모드는 levelNum 1로 설정
             GameManager3.levelNum = 1;
+            GameManager3.stageCnt = 10;
+
             GameManager3.stage_temp = 0;
             //문제 생성
             //외워야 되는 Pad가 누적인 경우

@@ -39,18 +39,10 @@ public class reset_button : MonoBehaviour
     }
 
     // 아래의 0부터 9까지의 위치는 편의상 0,0,0으로 초기화하였으며, 유니티 인스펙터에서 각각 원하는 위치로 수정하시면 됩니다.
-    public Vector3[] targetPositions = new Vector3[10]
+    public Vector3[] targetPositions = new Vector3[1]
     {
-        new Vector3(0.1977f,1.368f,0.297f),
-        new Vector3(0.257f,1.368f,0.297f),
-        new Vector3(0.126f,1.368f,0.297f),
-        new Vector3(0.332f,1.368f,0.297f),
-        new Vector3(0.415f,1.368f,0.297f),
-        new Vector3(0.257f,1.368f,0.524f),
-        new Vector3(0.1977f,1.368f,0.524f),
-        new Vector3(0.332f,1.368f,0.524f),
-        new Vector3(0.126f,1.368f,0.524f),
-        new Vector3(0.415f,1.368f,0.524f)
+        new Vector3(0.231f,1.368f,0.375f),
+
     };
 
     private void Start()

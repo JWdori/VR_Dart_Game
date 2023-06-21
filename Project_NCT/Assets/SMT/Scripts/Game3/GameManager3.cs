@@ -55,7 +55,7 @@ public class GameManager3 : MonoBehaviour
     static public int totalMiss;
 
     //스테이지 시간
-    static public int time2 = 60;
+    static public int time2 = 10000;
 
     //게임이 진행중이지 않을 때 시간을 멈췄다 진행하기 위한 시간 저장 변수
     int time_temp = 0;
@@ -73,7 +73,7 @@ public class GameManager3 : MonoBehaviour
 
 
 
-void Start()
+    void Start()
     {
         Result_Game3.isResult = false;
     }
@@ -81,8 +81,8 @@ void Start()
 
 
 
-//게임 상태를 나타내는 STATE
-public enum STATE
+    //게임 상태를 나타내는 STATE
+    public enum STATE
     {
         START, MAKE, HIT, WRONG, WAIT, IDLE, CLEAR, FINISH, SELECT, RESULT
     };
@@ -101,9 +101,9 @@ public enum STATE
     private int score = 0;
     //private int fail = 0;
 
-    public int[] Clearcnt = {2,2,3,3,3,4,4,5,5,6};
+    public int[] Clearcnt = { 2, 2, 3, 3, 3, 4, 4, 5, 5, 6 };
     public int[] FailBalloonscnt = { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
-    
+
     //어려움 난이도
     public int[] Clearcnt_3 = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 5 };
     public int[] FailBalloonscnt_3 = { 0, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
@@ -118,7 +118,7 @@ public enum STATE
         if (isTotaltime)
         {
             //전체 게임 시간 계산
-            totalTime = (int)(time_temp + (int)(Time.time - stageTime));
+            totalTime = (Time.time);
             /*
             //게임 전체 시간 출력
             totalTimeText.text = "Total time : " + totalTime;
@@ -129,31 +129,12 @@ public enum STATE
         if (isStagetime)
         {
             //스테이지 게임 시간 계산
-            time2 = 60 - (int)(Time.time - stageTime);
             //스테이지 게임 시간 출력
             stageTimeText.text = "남은 시간 : " + time2;
         }
 
         //time2는 stage 시간
         //60초 지나면 게임 종료
-        if (time2 <= 0 && !over)
-        {
-            totalTime += 60 - time2;
-            //한 번 더 판단
-            over = true;
-            //시간 다시 초기화
-            time2 = 60;
-            //시간 초과로 인한 게임 종료
-            isStagetime = false;
-            isTotaltime = false;
-            StartCoroutine(ShowFail());
-            //state가 FINISH로 바뀜
-            FailAudio.play();
-            BhapticsLibrary.Play(BhapticsEvent.FAIL);
-            state = STATE.FINISH;
-        }
-
-
 
 
 
@@ -176,7 +157,7 @@ public enum STATE
             //state가 MAKE이면 문제 제시
             //ShowTouch() 실행
             case STATE.MAKE:
-                
+
                 if (stage_temp != stageCnt)
                 {
                     StartCoroutine(ShowTouch(stageNum));
@@ -223,7 +204,7 @@ public enum STATE
             //터치패드 제거
             case STATE.FINISH:
                 Debug.Log("Finish");
-           
+
                 //게임 끝, 시간도 종료
                 isStagetime = false;
                 //isTotaltime = false;
@@ -314,8 +295,6 @@ public enum STATE
 
                 //두 번 틀리면 터치 안 되고, Fail 출력 시간도 안흐르게...
                 isStagetime = false;
-                isTotaltime = false;
-                totalTime += 60 - time2;
                 StartCoroutine(ShowFail());
                 yield return new WaitForSeconds(2f);
                 //state가 FINISH로 바뀜
@@ -328,7 +307,7 @@ public enum STATE
         }
         yield return new WaitForSeconds(0.03f);
         //missNum이 1인 경우는 이어서 플레이
-   
+
         state = STATE.IDLE;
 
     }
@@ -354,7 +333,6 @@ public enum STATE
                 if (score == Clearcnt[stageNum - 1])
                 {
                     //터치 안 되게 바꾸고, state는 CLEAR로 변환
-                    isTotaltime = false;
                     isStagetime = false;
                     state = STATE.CLEAR;
                     //return;
@@ -364,7 +342,7 @@ public enum STATE
         }
         else if (levelNum == 2)
         {
-            Debug.Log("히트" + score+"/"+ (Clearcnt[stageNum - 1] - FailBalloonscnt[stageNum - 1]));
+            Debug.Log("히트" + score + "/" + (Clearcnt[stageNum - 1] - FailBalloonscnt[stageNum - 1]));
             //눌러야 되는 Pad와 사용자가 누른 Pad가 같은 경우
             if (score == (Clearcnt[stageNum - 1] - FailBalloonscnt[stageNum - 1]))
             {
@@ -380,14 +358,13 @@ public enum STATE
                 {
 
                     //터치 안 되게 바꾸고, state는 CLEAR로 변환
-                    isTotaltime = false;
                     isStagetime = false;
                     state = STATE.CLEAR;
                     //return;
                 }
-                
+
             }
-            
+
 
         }
         else if (levelNum == 3)
@@ -408,7 +385,6 @@ public enum STATE
                 {
 
                     //터치 안 되게 바꾸고, state는 CLEAR로 변환
-                    isTotaltime = false;
                     isStagetime = false;
                     state = STATE.CLEAR;
                     //return;
@@ -436,7 +412,6 @@ public enum STATE
                 {
 
                     //터치 안 되게 바꾸고, state는 CLEAR로 변환
-                    isTotaltime = false;
                     isStagetime = false;
                     state = STATE.CLEAR;
                     //return;
@@ -466,7 +441,6 @@ public enum STATE
     {
         state = STATE.WAIT;
 
-        isTotaltime = false;
         isStagetime = false;
         //Clear 문구 보여줌
         StartCoroutine(ShowClear());
@@ -479,7 +453,7 @@ public enum STATE
             ++stageNum;
         }
         //최대 스테이지가 되었을 경우
-        else if(stageNum == stageCnt)
+        else if (stageNum == stageCnt)
         {
             BhapticsLibrary.Play(BhapticsEvent.CLEAR);
             ClearAudio.play();
@@ -488,7 +462,6 @@ public enum STATE
             yield return new WaitForSeconds(0.5f);
         }
         //stage가 바뀌는 순간에는 시간이 안 흐름
-        isTotaltime = false;
         isStagetime = false;
 
         //현재까지 흐른 전체 시간 저장
@@ -564,7 +537,7 @@ public enum STATE
         {
             float distanceToExistingBalloon = Mathf.Sqrt(Mathf.Pow(position.x - balloonPosition.x, 2f) + Mathf.Pow(position.y - balloonPosition.y, 2f));
 
-            if (distanceToExistingBalloon < balloonRadius*2)
+            if (distanceToExistingBalloon < balloonRadius * 2)
             {
                 // 이 위치는 이미 존재하는 풍선과 너무 가까움
                 return false;
@@ -699,7 +672,7 @@ public enum STATE
 
             }
 
-        
+
 
             yield return null; // 한 프레임 대기
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -755,8 +728,8 @@ public enum STATE
                         balloon.tag = "balloon"; // 풍선에 태그 추가
                         stage_move = stageNum;
 
-                       //이걸로 움직이는 코드 실행
-                       MonoBehaviour targetScript = balloon.GetComponent(targetScriptName) as MonoBehaviour;
+                        //이걸로 움직이는 코드 실행
+                        MonoBehaviour targetScript = balloon.GetComponent(targetScriptName) as MonoBehaviour;
                         if (targetScript != null)
                         {
                             targetScript.enabled = true;
@@ -765,7 +738,7 @@ public enum STATE
                         {
                             Debug.LogWarning("Script " + targetScriptName + " not found on GameObject " + balloon.name);
                         }
-                        Debug.Log("생성 " + targetScript + "/" + targetScriptName + "/" + balloon.name) ;
+                        Debug.Log("생성 " + targetScript + "/" + targetScriptName + "/" + balloon.name);
                         break;
                     }
                     else
@@ -863,7 +836,7 @@ public enum STATE
                                 float newScale = currentScale * randomScaleFactor;
                                 balloon.transform.localScale = new Vector3(newScale, newScale, newScale);
                             }
-                            else 
+                            else
                             {
                                 float currentScale = balloon.transform.localScale.x;
                                 float randomScaleFactor = Random.Range(0.5f, 0.7f);
@@ -969,7 +942,6 @@ public enum STATE
         stageTime = Time.time;
         pushText.text = "";
         isStagetime = true;
-        isTotaltime = true;
         //왜지?
         yield return new WaitForSeconds(1f);
 
@@ -1043,7 +1015,7 @@ public enum STATE
     public void PrintFalse()
     {
         FailBalloon = true;
-        Debug.Log("fail: " + FailBalloon + missNum + " 점수는 "+score);
+        Debug.Log("fail: " + FailBalloon + missNum + " 점수는 " + score);
     }
     public void MissScore(int points)
     {
