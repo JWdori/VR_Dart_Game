@@ -236,8 +236,9 @@ public class GameManager3 : MonoBehaviour
     {
         state = STATE.WAIT;
         //결과 UI를 보여주기 위해 true로 설정
-        Result_Game3.isResult = true;
+        //Result_Game3.isResult = true;
         //결과를 본 후에 다시 난이도를 선택할 수 있는 상태로 변환
+        Disappear_select3.isShow = true;
         state = STATE.SELECT;
         yield return new WaitForSeconds(1);
     }
@@ -564,6 +565,23 @@ public class GameManager3 : MonoBehaviour
     }
 
 
+    Vector3 GetRandomPositionInBoxCollider_33(BoxCollider boxCollider)
+    {
+        Vector3 boxCenter = boxCollider.center;
+        Vector3 boxSize = boxCollider.size;
+
+        // 박스 콜라이더의 중앙 값을 y값으로 사용하고, x값은 랜덤으로 생성
+        float randomX = Random.Range(-boxSize.x / 2f, boxSize.x / 2f) + boxCenter.x;
+        float randomY = boxCenter.y;
+        float randomZ = boxCenter.z;
+
+        Vector3 randomPosition = boxCollider.transform.TransformPoint(new Vector3(randomX, randomY, randomZ));
+
+        return randomPosition;
+    }
+
+
+
 
 
     // 스테이지마다 풍선 보여주기
@@ -589,8 +607,8 @@ public class GameManager3 : MonoBehaviour
                                          // 이 위치에 풍선이 없을 때까지 반복
                 while (currentAttempts < maxAttempts)
                 {
-                    Vector3 randomPosition = GetRandomPositionInBoxCollider(spawnAreaBoxCollider);
-                    if (IsPositionFree(randomPosition))
+                    Vector3 randomPosition = GetRandomPositionInBoxCollider_33(spawnAreaBoxCollider);
+                    if (IsPositionFree_3(randomPosition))
                     {
                         balloonPositions.Add(randomPosition);  // 새 위치를 리스트에 추가
                         GameObject balloon = Instantiate(balloonPrefab, randomPosition, Quaternion.Euler(-90f, 0f, 0f));
